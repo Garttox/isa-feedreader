@@ -7,3 +7,6 @@ compile:
 
 run: compile
 	@./$(EXECUTABLE)
+
+valgrind: compile
+	@valgrind --leak-check=summary ./$(EXECUTABLE)
