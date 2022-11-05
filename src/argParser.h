@@ -9,6 +9,8 @@ struct ArgOptions {
     std::string certfile;
     std::string certaddr;
     bool flagFeedfile = false;
+    bool flagCertfile = false;
+    bool flagCertaddr = false;
     bool flagLastChanged = false;
     bool flagAuthor = false;
     bool flagUrl = false;

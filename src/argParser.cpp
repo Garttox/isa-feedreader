@@ -3,43 +3,64 @@
 #include <getopt.h>
 #include <iostream>
 
+#include "testOut.h"
+
 #define optString ":f:c:CTau"
 
 ArgOptions parseArguments(int argc, char *argv[]) {
     int option;
+    bool printHelpMsg = false;
     ArgOptions parsedOptionArgs;
     while((option = getopt(argc, argv, optString)) != -1) {
         switch (option) {
             case 'f':
-                std::cout << "-f " << optarg << std::endl;
                 parsedOptionArgs.feedfile = optarg;
                 parsedOptionArgs.flagFeedfile = true;
                 break;
             case 'c':
-                std::cout << "-c " << optarg << std::endl;
+                parsedOptionArgs.certfile = optarg;
+                parsedOptionArgs.flagCertfile = true;
                 break;
             case 'C':
-                std::cout << "-C " << optarg << std::endl;
+                parsedOptionArgs.certaddr = optarg;
+                parsedOptionArgs.flagCertaddr = true;
                 break;
             case 'T':
-                std::cout << "-T" << std::endl;
+                parsedOptionArgs.flagLastChanged = true;
                 break;
             case 'a':
-                std::cout << "-a" << std::endl;
+                parsedOptionArgs.flagAuthor = true;
                 break;
             case 'u':
-                std::cout << "-u" << std::endl;
+                parsedOptionArgs.flagUrl = true;
                 break;
             case '?':
-                std::cout << "Unknown option " << optopt << std::endl;
+                std::cout << "Unknown option " << static_cast<char>(optopt) << std::endl;
+                printHelpMsg = true;
                 break;
             case ':':
-                std::cout << "Missing arg for " << optopt << std::endl;
+                std::cout << "Missing argument for " << static_cast<char>(optopt) << std::endl;
+                printHelpMsg = true;
                 break;
             default:
                 break;
         }
     }
-    
+
+    if(!parsedOptionArgs.flagFeedfile) {
+        if(optind < argc) {
+            parsedOptionArgs.url = argv[optind];
+            optind++;
+        }
+    }
+    for(int i = optind; i < argc; i++) {
+        std::cout << "invalid option/argument: " << argv[i] << std::endl;
+        printHelpMsg = true;
+    }
+
+    if(printHelpMsg) {
+        std::cout << "Usage: feedreader <URL | -f <feedfile>> [-c <certfile>] [-C <certaddr>] [-T] [-a] [-u]" << std::endl;
+    }
+
     return parsedOptionArgs;
 }
