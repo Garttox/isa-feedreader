@@ -1,7 +1,5 @@
-#ifndef URLPARSER_H
-#define URLPARSER_H
-
-#pragma once
+#ifndef URL_H
+#define URL_H
 
 #include <string>
 
