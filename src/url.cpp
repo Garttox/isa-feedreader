@@ -4,14 +4,14 @@
 #include <iostream>
 
 bool isValidUrl(std::string urlString) {
-    return std::regex_match(urlString, std::regex("^(http|https)://.+$"));
+    //return std::regex_match(urlString, std::regex("^(http|https)://.+$"));
+    return std::regex_match(urlString, std::regex("^(http|https)://([a-zA-Z-]+\\.)+([a-zA-Z-]+)(/([a-zA-Z=\\?&0-9._-]+))*/?$")); //TODO: vylepšit
 }
 
 URL parseURL(std::string urlString) {
     URL url;
     int protocolEndInd = urlString.find("://");
     url.protocol = urlString.substr(0, protocolEndInd) == "http" ? Protocol::HTTP : Protocol::HTTPS;
-    std::cout << "protokol: " << urlString.substr(0, protocolEndInd) << std::endl;
     urlString.erase(0, protocolEndInd + 3);
 
     bool hasPort = false;
@@ -19,7 +19,6 @@ URL parseURL(std::string urlString) {
     if(urlString.find(":") != std::string::npos) {
         hasPort = true;
     }
-
 
     int domainEndInd = urlString.find(hasPort ? ":" : "/");
     url.domain = urlString.substr(0, domainEndInd);
@@ -29,13 +28,9 @@ URL parseURL(std::string urlString) {
         int portEndInd = urlString.find("/");
         url.port = urlString.substr(0, portEndInd);
         urlString.erase(0, portEndInd);
-        std::cout << "port: " << url.port << std::endl;
+    } else {
+        url.port = (url.protocol == Protocol::HTTPS) ? "443" : "80";
     }
-
-    std::cout << "domain: " << url.domain << std::endl;
-    
     url.resource = urlString;
-    std::cout << "resource: " << url.resource << std::endl;
-
     return url;
 }

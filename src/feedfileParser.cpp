@@ -3,9 +3,8 @@
 #include <fstream>
 #include <string>
 #include <regex>
-#include "urlParser.h"
 
-//trim blank spaces from left and right
+//trim blank spaces from left and right TODO: rewrite to left and rignt separatly
 void trimSpaces(std::string &line) {
     std::string::iterator strIterator = line.begin();
     //iterate until first character that is not space
@@ -35,6 +34,17 @@ void trimSpaces(std::string &line) {
     line.erase(strIterator, line.end() - controlCharacters);
 }
 
+void trimSpacesLeft(std::string &line) {
+    auto nonSpaceCharIndex = line.find_first_not_of(" \t");
+    line.erase(0, nonSpaceCharIndex);
+}
+
+void trimSpacesRight(std::string &line) {
+    auto nonSpaceCharIndex = line.find_last_not_of(" \t");
+    if(nonSpaceCharIndex != std::string::npos)
+        line.erase(nonSpaceCharIndex + 1);
+}
+
 std::vector<URL> parseFeedfile(std::string feedfileLoc) {
     std::vector<URL> urlsVector;
     std::ifstream feedfile;
@@ -45,15 +55,11 @@ std::vector<URL> parseFeedfile(std::string feedfileLoc) {
     }
     std::string line;
     while(std::getline(feedfile, line)) {
-        trimSpaces(line);
-        if(line.size() != 0) {
-            //std::cout << line << std::endl;
-            if(isValidUrl(line)) { // TODO: regex
-                //std::cout << "valid" << std::endl;
+        trimSpacesLeft(line);
+        if(line.size() != 0 && line[0] != '#') {
+            trimSpacesRight(line);
+            if(isValidUrl(line)) {
                 urlsVector.push_back(parseURL(line));
-                
-            } else if(line[0] != '#') {
-                //TODO: unknown line
             }
         }
     }

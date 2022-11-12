@@ -6,7 +6,7 @@ compile:
 	@$(CC) -o $(EXECUTABLE) src/*.cpp $(CXXFLAGS)
 
 run: compile
-	@./$(EXECUTABLE)
+	@./$(EXECUTABLE) -f feedfile.txt -a -u -T
 
 valgrind: compile
-	@valgrind --leak-check=summary ./$(EXECUTABLE)
+	@valgrind --leak-check=summary ./$(EXECUTABLE) -f feedfile.txt

@@ -3,8 +3,6 @@
 #include <getopt.h>
 #include <iostream>
 
-#include "testOut.h"
-
 #define optString ":f:c:CTau"
 
 ArgOptions parseArguments(int argc, char *argv[]) {
@@ -59,7 +57,7 @@ ArgOptions parseArguments(int argc, char *argv[]) {
     }
 
     if(printHelpMsg) {
-        std::cout << "Usage: feedreader <URL | -f <feedfile>> [-c <certfile>] [-C <certaddr>] [-T] [-a] [-u]" << std::endl;
+        std::cout << "Použití: feedreader <URL | -f <feedfile>> [-c <certfile>] [-C <certaddr>] [-T] [-a] [-u]" << std::endl;
     }
 
     return parsedOptionArgs;

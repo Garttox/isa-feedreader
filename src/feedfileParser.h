@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <vector>
-#include "urlParser.h"
+
+#include "url.h"
 
 std::vector<URL> parseFeedfile(std::string feedfileLoc);
 void trimSpaces(std::string &line);
