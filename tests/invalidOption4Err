@@ -1,0 +1,2 @@
+Chybějící argument pro -f
+Použití: feedreader <URL | -f <feedfile>> [-c <certfile>] [-C <certaddr>] [-T] [-a] [-u]

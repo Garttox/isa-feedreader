@@ -1,0 +1,303 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "/home/garttox/school/isa/isa-feedreader",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2022-11-14 22:39:07",
+            "filesum": 42,
+            "codesum": 2884,
+            "commentsum": 583,
+            "blanksum": 313,
+            "statistics": {
+                ".md": {
+                    "code": 2,
+                    "comment": 0,
+                    "blank": 0
+                },
+                "": {
+                    "code": 2211,
+                    "comment": 433,
+                    "blank": 200
+                },
+                ".py": {
+                    "code": 69,
+                    "comment": 19,
+                    "blank": 11
+                },
+                ".txt": {
+                    "code": 15,
+                    "comment": 11,
+                    "blank": 1
+                },
+                ".h": {
+                    "code": 63,
+                    "comment": 35,
+                    "blank": 22
+                },
+                ".cpp": {
+                    "code": 524,
+                    "comment": 85,
+                    "blank": 79
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 0,
+                    "code": 5,
+                    "comment": 0,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 1,
+                    "code": 15,
+                    "comment": 11,
+                    "filename": "feedfile.txt"
+                },
+                {
+                    "filename": "feedreader",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 1,
+                    "code": 7,
+                    "comment": 18,
+                    "filename": "Makefile"
+                },
+                {
+                    "blank": 14,
+                    "code": 69,
+                    "comment": 1,
+                    "filename": "README"
+                },
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 0,
+                    "filename": "README.md"
+                },
+                {
+                    "blank": 8,
+                    "code": 68,
+                    "comment": 4,
+                    "filename": "src/argParser.cpp"
+                },
+                {
+                    "blank": 4,
+                    "code": 18,
+                    "comment": 5,
+                    "filename": "src/argParser.h"
+                },
+                {
+                    "blank": 6,
+                    "code": 37,
+                    "comment": 5,
+                    "filename": "src/feedfileParser.cpp"
+                },
+                {
+                    "blank": 3,
+                    "code": 7,
+                    "comment": 5,
+                    "filename": "src/feedfileParser.h"
+                },
+                {
+                    "blank": 26,
+                    "code": 147,
+                    "comment": 34,
+                    "filename": "src/feedReader.cpp"
+                },
+                {
+                    "blank": 3,
+                    "code": 6,
+                    "comment": 5,
+                    "filename": "src/feedReader.h"
+                },
+                {
+                    "blank": 7,
+                    "code": 47,
+                    "comment": 7,
+                    "filename": "src/main.cpp"
+                },
+                {
+                    "blank": 9,
+                    "code": 42,
+                    "comment": 0,
+                    "filename": "src/url.cpp"
+                },
+                {
+                    "blank": 7,
+                    "code": 17,
+                    "comment": 13,
+                    "filename": "src/url.h"
+                },
+                {
+                    "blank": 23,
+                    "code": 183,
+                    "comment": 35,
+                    "filename": "src/xmlReader.cpp"
+                },
+                {
+                    "blank": 5,
+                    "code": 15,
+                    "comment": 7,
+                    "filename": "src/xmlReader.h"
+                },
+                {
+                    "blank": 48,
+                    "code": 1733,
+                    "comment": 311,
+                    "filename": "testFeed"
+                },
+                {
+                    "blank": 8,
+                    "code": 53,
+                    "comment": 19,
+                    "filename": "tests.py"
+                },
+                {
+                    "blank": 0,
+                    "code": 3,
+                    "comment": 0,
+                    "filename": "tests/invalidOption1Err"
+                },
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 0,
+                    "filename": "tests/invalidOption2Err"
+                },
+                {
+                    "blank": 0,
+                    "code": 3,
+                    "comment": 0,
+                    "filename": "tests/invalidOption3Err"
+                },
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 0,
+                    "filename": "tests/invalidOption4Err"
+                },
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 0,
+                    "filename": "tests/invalidOption5Err"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "tests/invalidUrl1Err"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "tests/invalidUrl2Err"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 1,
+                    "filename": "tests/invalidXMLErr"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 1,
+                    "filename": "tests/ivalidFeedCert1Err"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "tests/ivalidFeedfileUrl1Err"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 1,
+                    "filename": "tests/ivalidFeedUrl1Err"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 1,
+                    "filename": "tests/ivalidFeedUrl2Err"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "tests/missingFeedfileErr"
+                },
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 1,
+                    "filename": "tests/res/feedfile1"
+                },
+                {
+                    "blank": 3,
+                    "code": 3,
+                    "comment": 1,
+                    "filename": "tests/res/feedfile2"
+                },
+                {
+                    "blank": 4,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "tests/validTest1"
+                },
+                {
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0,
+                    "filename": "tests/validTest1Err"
+                },
+                {
+                    "blank": 33,
+                    "code": 68,
+                    "comment": 0,
+                    "filename": "tests/validTest2"
+                },
+                {
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0,
+                    "filename": "tests/validTest2Err"
+                },
+                {
+                    "blank": 97,
+                    "code": 293,
+                    "comment": 97,
+                    "filename": "tests/validTest3"
+                },
+                {
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0,
+                    "filename": "tests/validTest3Err"
+                },
+                {
+                    "blank": 3,
+                    "code": 16,
+                    "comment": 0,
+                    "filename": "testUtill.py"
+                },
+                {
+                    "filename": "xtrlic02.tar",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                }
+            ]
+        }
+    ]
+}

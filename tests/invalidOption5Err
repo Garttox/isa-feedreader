@@ -1,0 +1,2 @@
+Byl zadán feedfile i url. Url bude ignorována.
+Použití: feedreader <URL | -f <feedfile>> [-c <certfile>] [-C <certaddr>] [-T] [-a] [-u]

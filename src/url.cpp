@@ -4,8 +4,7 @@
 #include <iostream>
 
 bool isValidUrl(std::string urlString) {
-    //return std::regex_match(urlString, std::regex("^(http|https)://.+$"));
-    return std::regex_match(urlString, std::regex("^(http|https)://([a-zA-Z-]+\\.)+([a-zA-Z-]+)(/([a-zA-Z=\\?&0-9._-]+))*/?$")); //TODO: vylepšit
+    return std::regex_match(urlString, std::regex("^(http|https)://([a-zA-Z-]{2,63}\\.)+([a-zA-Z-]{2,63})(:[0-9]{1,5})?(/([a-zA-Z=\\?&0-9._\\-~!&$'\\(\\)*,;=:@]+))*/?$"));
 }
 
 URL parseURL(std::string urlString) {
@@ -33,4 +32,20 @@ URL parseURL(std::string urlString) {
     }
     url.resource = urlString;
     return url;
+}
+
+std::string getUrlString(URL url) {
+    std::string urlString;
+    if(url.protocol == Protocol::HTTP) {
+        urlString += "http://";
+    } else {
+        urlString += "https://";
+    }
+    urlString += url.domain;
+    if((url.protocol == Protocol::HTTP && url.port != "80") || (url.protocol == Protocol::HTTPS && url.port != "443")) {
+        urlString += ":" + url.port;
+    }
+    urlString += url.resource;
+
+    return urlString;
 }

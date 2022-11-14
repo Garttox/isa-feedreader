@@ -1,14 +1,27 @@
 #include "xmlReader.h"
 
+#include <iostream>
+#include <vector>
+
+//libxml2
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+
+// inits libxml2 parser
 void initXML() {
     xmlInitParser();
 }
 
+// free xml document and cleanup libxml2 parser
 void freeXML(xmlDocPtr document) {
     xmlFreeDoc(document);
     xmlCleanupParser();
 }
 
+/*
+* Determinates if xml document is Atom, Rss or none of them
+* returns FeedType, if xml document is not Atom or Rss, FeedType::unknown is returned
+*/
 FeedType getFeedType(xmlDocPtr document) {
     xmlNodePtr rootNode = xmlDocGetRootElement(document);
     if(rootNode->name) {
@@ -21,37 +34,14 @@ FeedType getFeedType(xmlDocPtr document) {
     return FeedType::unknown;
 }
 
-void addNsToXPath(std::string &xpath, std::string ns) {
-    size_t index = xpath.find('/');
-    while(index != std::string::npos) {
-        if(index != xpath.size()-1 && xpath[index + 1] != '/') {
-            xpath.insert(index + 1, ns + ":");
-        }
-        index = xpath.find('/', index+1);
-    }
-}
-
-std::string findNodeByNameOld(xmlDocPtr document, std::string nodeXPath) {
-    xmlXPathContextPtr xpathContext = xmlXPathNewContext(document);
-    xmlXPathRegisterNs(xpathContext, (const xmlChar*)"Atom", (const xmlChar*)"http://www.w3.org/2005/Atom");
-    
-    xmlXPathObjectPtr xmlXPathObj = xmlXPathEval((const xmlChar*)nodeXPath.data(), xpathContext);
-    xmlXPathFreeContext(xpathContext);
-    //std::cout << xmlXPathObj->nodesetval->nodeNr << std::endl;
-    int size = xmlXPathObj->nodesetval->nodeNr;
-    for(int i = 0; i < size; i++) {
-        //std::cout << xmlXPathObj->nodesetval->nodeTab[i]->last->content << std::endl;
-    }
-    
-    std::string ret = std::string((const char*)xmlXPathObj->nodesetval->nodeTab[0]->last->content);
-    xmlXPathFreeObject(xmlXPathObj);
-    return ret;
-}
-
+// compares xmlChar string with std::string
 bool compareXmlChar(const xmlChar* xmlStr, std::string str) {
     return std::string((const char*)xmlStr) == str;
 }
 
+/*
+* returns first child node with name nodeName or NULL if no node was found
+*/
 xmlNodePtr findFirstNodeByName(xmlNodePtr node, std::string nodeName) {
     if(node->children == NULL) {
         return NULL;
@@ -66,15 +56,11 @@ xmlNodePtr findFirstNodeByName(xmlNodePtr node, std::string nodeName) {
     return NULL;
 }
 
-//xmlXPathObjectPtr needs to be freed
+/*
+* returns text content of the node
+* empty string if node has no text content or the node doesnt exists
+*/
 std::vector<xmlNodePtr> findNodesByName(xmlNodePtr node, std::string nodeName) {
-    /*xmlXPathObjectPtr xmlXPathObj = xmlXPathEval((const xmlChar*)nodeXPath.data(), xpathContext);
-    //if xmlXPathEval is unsuccessful return NULL
-    if(xmlXPathObj && xmlXPathObj->nodesetval->nodeNr == 0) {
-        return NULL;
-    }
-    return xmlXPathObj;*/
-
     std::vector<xmlNodePtr> resultNodes;
     if(node->children == NULL) {
         return resultNodes;
@@ -89,154 +75,172 @@ std::vector<xmlNodePtr> findNodesByName(xmlNodePtr node, std::string nodeName) {
     return resultNodes;
 }
 
+/*
+* returns text content of the node
+* empty string if node has no text content or the node doesnt exists
+*/
 std::string getNodeTextContent(xmlNodePtr node) {
-
-    return std::string((const char*)node->last->content);
+    xmlChar* content = xmlNodeGetContent(node);
+    std::string contentString = content == NULL ? "" : (char*)content;
+    xmlFree(content);
+    return contentString;
 }
 
-void testOutAtomLine(xmlXPathContextPtr xpathContext, xmlNodePtr node, std::string a) {
-    xmlXPathObjectPtr xmlXPathObj;
-    xmlXPathObj = xmlXPathNodeEval(node, (const xmlChar*)a.data(), xpathContext);
-    if(xmlXPathObj != NULL)
-        std::cout << "*** " << xmlXPathObj->nodesetval->nodeTab[0]->last->content << " ***" << std::endl;
+/*
+* returns text content of the node's property or 
+* empty string if node has no property propertyName or the node doesnt exists
+*/
+std::string getXmlPropContent(xmlNodePtr node, std::string propertyName) {
+    xmlChar* content = xmlGetProp(node, (const xmlChar*)propertyName.data());
+    std::string contentString = content == NULL ? "" : (char*)content;
+    xmlFree(content);
+    return contentString;
 }
 
-void testOutAtom(xmlDocPtr document, DisplayOptions displayOptions) {
-    /*xmlXPathContextPtr xpathContext = xmlXPathNewContext(document);
-    xmlXPathRegisterNs(xpathContext, (const xmlChar*)"a", (const xmlChar*)"http://www.w3.org/2005/Atom");
-    xmlXPathObjectPtr xmlXPathObj;
-    xmlXPathObjectPtr xmlXPathObjEntry = xmlXPathEval((const xmlChar*)"//a:feed/a:entry", xpathContext);
-    //std::cout << xmlXPathObjEntry->nodesetval->nodeNr << std::endl;
-    std::cout << (xmlXPathObjEntry->nodesetval == NULL ? "true" : "false") << "ATOM";
-    std::cout << xmlXPathObjEntry->nodesetval->nodeNr;
-    return;
-    int size = xmlXPathObjEntry->nodesetval->nodeNr;
-    for(int i = 0; i < size; i++) {
-        //std::cout << xmlXPathObjEntry->nodesetval->nodeTab[i]->last->content << std::endl;
-        xmlXPathObj = xmlXPathNodeEval(xmlXPathObjEntry->nodesetval->nodeTab[i], (const xmlChar*)"Atom:title", xpathContext);
-        if(xmlXPathObj->nodesetval != NULL)
-            std::cout << xmlXPathObj->nodesetval->nodeTab[0]->last->content << std::endl;
-        xmlXPathFreeObject(xmlXPathObj);
+// print feed's title
+void printFeedTitle(std::string title) {
+    std::cout << "*** " << title << " ***" << std::endl;
+}
+// print item's/entry's title
+void printTitle(std::string title) {
+    std::cout << title << std::endl;
+}
+// print item's/entry's url
+void printUrl(std::string url) {
+    std::cout << "URL: " << url << std::endl;
+}
+// print item's/entry's author
+void printAuthor(std::string author) {
+    std::cout << "Autor: " << author << std::endl;
+}
+// print item's/entry's last changed time
+void printLastChanged(std::string lastChanged) {
+    std::cout << "Aktualizace: " << lastChanged << std::endl;
+}
+
+/*
+* Prints out Rss feed,
+* displayOptions determinates what should be printed from the entries.
+* If xml document does not contain data that displayOptions want to print, then option will be ignored
+*/
+void readRss(xmlNodePtr rootNode, DisplayOptions displayOptions) {
+    bool useEntrySeparator = displayOptions.author || displayOptions.lastChanged || displayOptions.url;
+    std::vector<xmlNodePtr> items;
+    //find required channel node
+    xmlNodePtr channelNode = findFirstNodeByName(rootNode, "channel");
+    if(!channelNode) {
+        //try to search in root node in case that <channel> node is missing
+        channelNode = rootNode;
     }
-    xmlXPathFreeObject(xmlXPathObjEntry);
-    xmlXPathFreeContext(xpathContext);*/
-    
-    
-    /*std::vector<xmlNodePtr> resultNodes;
-    xmlNodePtr rootNode = xmlDocGetRootElement(document);
-    xmlNodePtr node = rootNode->children;
-    std::cout << rootNode->children->name << std::endl;
-    while(node != NULL) {
-        if(std::string((const char*)node->name) == "entry") {
-            xmlNodePtr entryNode = node->children;
-            while(entryNode != NULL) {
-                if(std::string((const char*)entryNode->name) == "title") {
-                    std::cout << getNodeTextContent(entryNode) << std::endl;
-                } else if(std::string((const char*)entryNode->name) == "updated") {
-                    std::cout << "Aktualizace: " << getNodeTextContent(entryNode) << std::endl;
-                } else if(std::string((const char*)entryNode->name) == "id") {
-                    std::cout << "URL: " << getNodeTextContent(entryNode) << std::endl;
-                } else if(std::string((const char*)entryNode->name) == "updated") {
+    items = findNodesByName(channelNode, "item");
 
-                    std::cout << "Autor: " << getNodeTextContent(entryNode) << std::endl;
-                }
-                entryNode = entryNode->next;
-            }
+    printFeedTitle(getNodeTextContent(findFirstNodeByName(channelNode, "title")));
+    bool first = true; //indicate first item/iteration
+    std::cout << items.size();
+    //iterate through all items
+    for(xmlNodePtr itemNode : items) {
+        if(useEntrySeparator && !first) {
             std::cout << std::endl;
         }
-        
-        node = node->next;
+        printTitle(getNodeTextContent(findFirstNodeByName(itemNode, "title")));
+        if(displayOptions.lastChanged) {
+            xmlNodePtr changedNode = findFirstNodeByName(itemNode, "pubDate");
+            if(changedNode) {
+                printLastChanged(getNodeTextContent(changedNode));
+            }
+        }
+        if(displayOptions.url) {
+            xmlNodePtr urlNode = findFirstNodeByName(itemNode, "link");
+            if(urlNode) {
+                printUrl(getNodeTextContent(urlNode));
+            }
+        }
+        if(displayOptions.author) {
+            xmlNodePtr authorNode = findFirstNodeByName(itemNode, "author");
+            if(authorNode) {
+                printAuthor(getNodeTextContent(authorNode));
+            }
+        }
+        first = false;
     }
-    return resultNodes;*/
+}
+
+/*
+* Prints out Atom feed,
+* displayOptions determinates what should be printed from the entries.
+* If xml document does not contain data that displayOptions want to print, then option will be ignored
+*/
+void readAtom(xmlNodePtr rootNode, DisplayOptions displayOptions) {
     bool useEntrySeparator = displayOptions.author || displayOptions.lastChanged || displayOptions.url;
-    xmlNodePtr rootNode = xmlDocGetRootElement(document);
-    std::cout << "*** " << getNodeTextContent(findFirstNodeByName(rootNode, "title")) << " ***" << std::endl;
     std::vector<xmlNodePtr> entries = findNodesByName(rootNode, "entry");
+    bool first = true; //indicate first item/iteration
+    printFeedTitle(getNodeTextContent(findFirstNodeByName(rootNode, "title")));
+    //iterate through all entries
     for(xmlNodePtr entryNode : entries) {
-        std::cout << getNodeTextContent(findFirstNodeByName(entryNode, "title")) << std::endl;
+        if(useEntrySeparator && !first) {
+            std::cout << std::endl;
+        }
+        printTitle(getNodeTextContent(findFirstNodeByName(entryNode, "title")));
+
         if(displayOptions.lastChanged) {
             xmlNodePtr changedNode = findFirstNodeByName(entryNode, "updated");
             if(changedNode) {
-                std::cout << "Aktualizace: " << getNodeTextContent(changedNode) << std::endl;
+                printLastChanged(getNodeTextContent(changedNode));
             }
         }
         if(displayOptions.url) {
             xmlNodePtr urlNode = findFirstNodeByName(entryNode, "link");
             if(urlNode) {
-                xmlAttrPtr hrefNode = urlNode->properties;
-                while(!compareXmlChar(hrefNode->name, "href")) {
-                    hrefNode = hrefNode->next;
-                }
-                std::cout << "URL: " << hrefNode->last->content << std::endl;
-            } else {
-                urlNode = findFirstNodeByName(entryNode, "id");
-                if(urlNode) {
-                    std::cout << "URL: " << getNodeTextContent(urlNode) << std::endl;
-                }
+                printUrl(getXmlPropContent(urlNode, "href"));
             }
         }
         if(displayOptions.author) {
             xmlNodePtr authorNode = findFirstNodeByName(entryNode, "author");
             if(authorNode) {
                 xmlNodePtr authorNameNode = findFirstNodeByName(authorNode, "name");
+                xmlNodePtr authorEmailNode = findFirstNodeByName(authorNode, "email");
+                //author's name has higher priority when printing
                 if(authorNameNode) {
-                    std::cout << "Autor: " << getNodeTextContent(authorNameNode) << std::endl;
-                } else {
-                    xmlNodePtr authorEmailNode = findFirstNodeByName(authorNode, "email");
-                    if(authorEmailNode) {
-                        std::cout << "Autor: " << getNodeTextContent(authorEmailNode) << std::endl;
-                    }
+                    printAuthor(getNodeTextContent(authorNameNode));
+                } else if(authorEmailNode) {
+                    printAuthor(getNodeTextContent(authorEmailNode));
                 }
             }
         }
-        if(useEntrySeparator) {
-            std::cout << std::endl;
-        }
+        first = false;
     }
 }
 
-void testOutRss(xmlDocPtr document, DisplayOptions displayOptions) {
-    bool useEntrySeparator = displayOptions.author || displayOptions.lastChanged || displayOptions.url;
-    xmlNodePtr rootNode = xmlDocGetRootElement(document);
-    xmlNodePtr channelNode = findFirstNodeByName(rootNode, "channel");
-    std::cout << "*** " << getNodeTextContent(findFirstNodeByName(channelNode, "title")) << " ***" << std::endl;
-    std::vector<xmlNodePtr> items = findNodesByName(channelNode, "item");
-    for(xmlNodePtr itemNode : items) {
-        std::cout << getNodeTextContent(findFirstNodeByName(itemNode, "title")) << std::endl;
-        if(displayOptions.lastChanged) {
-            xmlNodePtr changedNode = findFirstNodeByName(itemNode, "pubDate");
-            if(changedNode) {
-                std::cout << "Aktualizace: " << getNodeTextContent(changedNode) << std::endl;
-            }
-        }
-        if(displayOptions.url) {
-            xmlNodePtr urlNode = findFirstNodeByName(itemNode, "link");
-            if(urlNode) {
-                std::cout << "URL: " << getNodeTextContent(urlNode) << std::endl;
-            }
-        }
-        if(displayOptions.author) {
-            xmlNodePtr authorNode = findFirstNodeByName(itemNode, "creator");
-            if(authorNode) {
-                std::cout << "Autor: " << getNodeTextContent(authorNode) << std::endl;
-            }
-        }
-        if(useEntrySeparator) {
-            std::cout << std::endl;
-        }
+/*
+* print error message on stderr
+*/
+void printError(std::string msg, std::string feedName) {
+    if(feedName.size()) {
+        std::cerr << feedName << ": ";
     }
+    std::cerr << msg << std::endl;
 }
 
-void readXML(std::string feed, DisplayOptions displayOptions) {
+void readXML(std::string feed, DisplayOptions displayOptions, std::string feedName) {
     initXML();
     xmlChar* xmlCharDoc = xmlCharStrdup(feed.data());
-    xmlDocPtr document = xmlParseDoc(xmlCharDoc);
+    int parserOptions = XML_PARSE_NOWARNING + XML_PARSE_NOERROR;
+    xmlDocPtr document = xmlReadDoc(xmlCharDoc, NULL, NULL, parserOptions);
+    if(document == NULL) { //if feed is not valid xml
+        xmlFree(xmlCharDoc);
+        freeXML(document);
+        printError("Stažený dokument není ve formátu XML.", feedName);
+        return;
+    }
 
+    xmlNodePtr rootNode = xmlDocGetRootElement(document);
     FeedType feedType = getFeedType(document);
     if(feedType == FeedType::atom) {
-        testOutAtom(document, displayOptions);
+        readAtom(rootNode, displayOptions);
+    } else if(feedType == FeedType::rss){
+        readRss(rootNode, displayOptions);
     } else {
-        testOutRss(document, displayOptions);
+        printError("Feed není v podporovaném formátu (Atom nebo RSS).", feedName);
     }
 
     xmlFree(xmlCharDoc);

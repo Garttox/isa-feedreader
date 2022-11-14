@@ -1,0 +1,83 @@
+jméno: Michal Trlica
+xlogin: xtrlic02
+Vytvořeno: 14. 11. 2022
+
+#Čtečka novinek ve formátu Atom a RSS s podporou TLS
+
+Aplikace slouží pro stahování novinek ve formátu Atom a RSS 2.0.
+Zdroje novinek se programu předávají buď přímo nebo ve feedfile (soubor obsahující více URL). Je možné specifikovat i to co se vypíše pomocí přepínačů "-T -a -u" viz Použití.
+Pokud uživatel chce použít vlastní soubor/složku s certifikáty, je možné ji předat programu pomocí přepínačů "-C <certaddr>" a "-c <certfile>" viz Použití.
+
+###Použití:
+Program se spouští příkazem:
+feedreader <URL | -f <feedfile>> [-c <certfile>] [-C <certaddr>] [-T] [-a] [-u]
+kde:
+    URL - URL zdroje
+    -f <feedfile> - soubor obsahující URL zdrojů (na každém řádku je jedna URL, prázdné řádky a řádky začínající znakem "#" budou přeskočeny)
+    -c <certfile> - soubor obsahující certifikáty (pokud není zadaný certfile ani ceraddr, použije se výchozí úložiště certifikátů)
+    -C <certaddr> - složka ve které se budou vyhledávat certifikáty (pokud není zadaný certfile ani ceraddr, použije se výchozí úložiště certifikátů)
+    -T - Vypíše datum poslední změny záznamu, pokud je ve zdroji uvedeno
+    -a - Vypíše autora záznamu, pokud je ve zdroji uveden
+    -u - Vypíše URL záznamu, pokud je ve zdroji uvedena
+
+###Omezení
+Oproti zadání program nevypisuje podrobně všechny chybové stavy v rámci stahování zdrojů, ale namísto toho vypíše pouze obecnou chybu. To neplatí o všech chybných stavech, které mohou nastat v rámci stahování zdrojů.
+
+Při překladu na freeBSD (evě), je třeba přeložit program pomocí "make compileFreeBSD", z důvodu vyžadovaného parametru "-static-libstdc++" u překladu. Ze stejného důvodu je potřeba spustit testy přímo a nikoliv přes "make test".
+
+###Příklad spuštění:
+
+./feedreader https://what-if.xkcd.com/feed.atom -T
+*** what if? ***
+Star Ownership
+Aktualizace: 2022-11-01T00:00:00Z
+
+Transatlantic Car Rental
+Aktualizace: 2022-09-06T00:00:00Z
+
+Hailstones
+Aktualizace: 2022-07-06T00:00:00Z
+
+Hot Banana
+Aktualizace: 2022-05-04T00:00:00Z
+
+Earth-Moon Fire Pole
+Aktualizace: 2018-05-21T00:00:00Z
+
+###Testy
+Testy se spouští příkazem "make test" nebo python3 tests.py
+Pro spuštění testů je nutné mít nainstalovaný python3
+Testováno na verzi python 3.8.10
+Některé testy, které kontrolují standardní výstup, nemusí být vyhodnoceny správně a to z důvodu změny obsahu na zdrojích pro které původně byly vygenerované.
+
+####Odevzdané soubory
+
+src/argParser.h
+src/feedReader.h
+src/feedfileParser.h
+src/main.cpp
+src/xmlReader.h
+src/url.h
+src/feedReader.cpp
+src/xmlReader.cpp
+src/argParser.cpp
+src/url.cpp
+src/feedfileParser.cpp
+README
+Makefile
+tests.py
+tests/res/feedfile1
+tests/invalidOption5Err
+tests/invalidOption4Err
+tests/invalidOption3Err
+tests/invalidUrl2Err
+tests/invalidUrl2
+tests/invalidOption4
+tests/invalidOption3
+tests/invalidUrl1
+tests/invalidOption1Err
+tests/invalidOption1
+tests/invalidOption2
+tests/invalidOption5
+tests/invalidUrl1Err
+tests/invalidOption2Err

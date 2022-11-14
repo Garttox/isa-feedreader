@@ -5,7 +5,11 @@
 #include <vector>
 
 #include "url.h"
+/*
+* parse feedFile, ignores leading and trailing spaces
+* push all valid urls into urlsVector
+* returns true if parsing was successful or false if file could not be opened
+*/
+bool parseFeedfile(std::string feedfileLoc, std::vector<URL> &urlsVector);
 
-std::vector<URL> parseFeedfile(std::string feedfileLoc);
-void trimSpaces(std::string &line);
 #endif

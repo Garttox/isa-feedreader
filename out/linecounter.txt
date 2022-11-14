@@ -1,0 +1,64 @@
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2022-11-14 22:39:07
+count workspace : /home/garttox/school/isa/isa-feedreader
+total files : 42
+total code lines : 2884
+total comment lines : 583
+total blank lines : 313
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |            .md|              2|              0|              0|  0.069|
+   |               |           2211|            433|            200|     77|
+   |            .py|             69|             19|             11|    2.4|
+   |           .txt|             15|             11|              1|   0.52|
+   |             .h|             63|             35|             22|    2.2|
+   |           .cpp|            524|             85|             79|     18|
+   -------------------------------------------------------------------------
+.gitignore, code is 5, comment is 0, blank is 0.
+feedfile.txt, code is 15, comment is 11, blank is 1.
+feedreader, it is a binary file.
+Makefile, code is 7, comment is 18, blank is 1.
+README, code is 69, comment is 1, blank is 14.
+README.md, code is 2, comment is 0, blank is 0.
+src/argParser.cpp, code is 68, comment is 4, blank is 8.
+src/argParser.h, code is 18, comment is 5, blank is 4.
+src/feedfileParser.cpp, code is 37, comment is 5, blank is 6.
+src/feedfileParser.h, code is 7, comment is 5, blank is 3.
+src/feedReader.cpp, code is 147, comment is 34, blank is 26.
+src/feedReader.h, code is 6, comment is 5, blank is 3.
+src/main.cpp, code is 47, comment is 7, blank is 7.
+src/url.cpp, code is 42, comment is 0, blank is 9.
+src/url.h, code is 17, comment is 13, blank is 7.
+src/xmlReader.cpp, code is 183, comment is 35, blank is 23.
+src/xmlReader.h, code is 15, comment is 7, blank is 5.
+testFeed, code is 1733, comment is 311, blank is 48.
+tests.py, code is 53, comment is 19, blank is 8.
+tests/invalidOption1Err, code is 3, comment is 0, blank is 0.
+tests/invalidOption2Err, code is 2, comment is 0, blank is 0.
+tests/invalidOption3Err, code is 3, comment is 0, blank is 0.
+tests/invalidOption4Err, code is 2, comment is 0, blank is 0.
+tests/invalidOption5Err, code is 2, comment is 0, blank is 0.
+tests/invalidUrl1Err, code is 1, comment is 0, blank is 0.
+tests/invalidUrl2Err, code is 1, comment is 0, blank is 0.
+tests/invalidXMLErr, code is 1, comment is 1, blank is 0.
+tests/ivalidFeedCert1Err, code is 1, comment is 1, blank is 0.
+tests/ivalidFeedfileUrl1Err, code is 1, comment is 0, blank is 0.
+tests/ivalidFeedUrl1Err, code is 1, comment is 1, blank is 0.
+tests/ivalidFeedUrl2Err, code is 1, comment is 1, blank is 0.
+tests/missingFeedfileErr, code is 1, comment is 0, blank is 0.
+tests/res/feedfile1, code is 2, comment is 1, blank is 0.
+tests/res/feedfile2, code is 3, comment is 1, blank is 3.
+tests/validTest1, code is 11, comment is 0, blank is 4.
+tests/validTest1Err, code is 0, comment is 0, blank is 0.
+tests/validTest2, code is 68, comment is 0, blank is 33.
+tests/validTest2Err, code is 0, comment is 0, blank is 0.
+tests/validTest3, code is 293, comment is 97, blank is 97.
+tests/validTest3Err, code is 0, comment is 0, blank is 0.
+testUtill.py, code is 16, comment is 0, blank is 3.
+xtrlic02.tar, it is a binary file.
+===============================================================================

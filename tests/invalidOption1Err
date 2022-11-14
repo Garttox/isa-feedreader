@@ -1,0 +1,3 @@
+Neznámý parametr -x
+Nebyl zadán feedfile ani url.
+Použití: feedreader <URL | -f <feedfile>> [-c <certfile>] [-C <certaddr>] [-T] [-a] [-u]
